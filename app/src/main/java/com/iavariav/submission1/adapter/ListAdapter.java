@@ -1,6 +1,7 @@
 package com.iavariav.submission1.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.ui.detail.DetailActivity;
+import com.iavariav.submission1.utils.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +51,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.AcademyViewHol
     public void onBindViewHolder(@NonNull final AcademyViewHolder holder, final int position) {
         holder.tvTitle.setText(getListCourses().get(position).gettitle());
         holder.tvDescription.setText(getListCourses().get(position).getDeskripsi());
-        holder.tvDate.setText(String.format("Deadline %s", getListCourses().get(position).getreleaseDate()));
+        holder.tvDate.setText(String.format("Release ", getListCourses().get(position).getreleaseDate()));
         holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(activity, DetailCourseActivity.class);
-//            intent.putExtra(DetailCourseActivity.EXTRA_COURSE, getListCourses().get(position).getCourseId());
-//            activity.startActivity(intent);
-            Toast.makeText(activity, "" + getListCourses().get(position).gettitle(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(activity, DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_ID, getListCourses().get(position).getId());
+            intent.putExtra(DetailActivity.EXTRA_IMAGE, getListCourses().get(position).getImageURL());
+            intent.putExtra(DetailActivity.EXTRA_TITTLE, getListCourses().get(position).gettitle());
+            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, getListCourses().get(position).getDeskripsi());
+            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, getListCourses().get(position).getreleaseDate());
+            activity.startActivity(intent);
+
         });
 
-        Glide.with(holder.itemView.getContext())
+        GlideApp.with(holder.itemView.getContext())
                 .load(getListCourses().get(position).getImageURL())
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error))
                 .into(holder.imgPoster);

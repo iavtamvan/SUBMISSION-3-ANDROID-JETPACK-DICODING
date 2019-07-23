@@ -100,7 +100,7 @@ public class DataDummy {
                 "To carry out the biggest heist in history, a mysterious man called The Professor recruits a band of eight robbers who have a single characteristic: none of them has anything to lose. Five months of seclusion - memorizing every step, every detail, every probability - culminate in eleven days locked up in the National Coinage and Stamp Factory of Spain, surrounded by police forces and with dozens of hostages in their power, to find out whether their suicide wager will lead to everything or nothing.",
                 "2017-05-02"));
         tv.add(new DeskripsiEntity("12609",
-                baseImageURL + "/3wx3EAMtqnbSLhGG8NrqXriCUIQ.jpg\"",
+                baseImageURL + "/3wx3EAMtqnbSLhGG8NrqXriCUIQ.jpg",
                 "Dragon Ball",
                 "Long ago in the mountains, a fighting master known as Gohan discovered a strange boy whom he named Goku. Gohan raised him and trained Goku in martial arts until he died. The young and very strong boy was on his own, but easily managed. Then one day, Goku met a teenage girl named Bulma, whose search for the dragon balls brought her to Goku's home. Together, they set off to find all seven dragon balls in an adventure.",
                 "1986-02-26"));

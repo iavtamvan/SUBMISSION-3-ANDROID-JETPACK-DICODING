@@ -58,8 +58,7 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@+id/tv_item_description"
             app:layout_constraintStart_toStartOf="@+id/tv_item_description"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_description"
-            tools:text="@string/dateline" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_description"/>
 
         <TextView
             android:id="@+id/tv_item_description"

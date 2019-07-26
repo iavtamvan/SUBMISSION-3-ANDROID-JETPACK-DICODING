@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
@@ -22,11 +20,11 @@ import com.iavariav.submission1.utils.GlideApp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.AcademyViewHolder> {
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.AcademyViewHolder> {
     private final Activity activity;
     private List<DeskripsiEntity> mCourses = new ArrayList<>();
 
-    public ListAdapter(Activity activity) {
+    public DataAdapter(Activity activity) {
         this.activity = activity;
     }
 
@@ -55,10 +53,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.AcademyViewHol
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(activity, DetailActivity.class);
             intent.putExtra(DetailActivity.EXTRA_ID, getListCourses().get(position).getId());
-            intent.putExtra(DetailActivity.EXTRA_IMAGE, getListCourses().get(position).getImageURL());
-            intent.putExtra(DetailActivity.EXTRA_TITTLE, getListCourses().get(position).gettitle());
-            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, getListCourses().get(position).getDeskripsi());
-            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, getListCourses().get(position).getreleaseDate());
             activity.startActivity(intent);
 
         });

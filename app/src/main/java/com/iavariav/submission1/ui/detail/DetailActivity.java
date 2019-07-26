@@ -10,7 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.iavariav.submission1.R;
+import com.iavariav.submission1.adapter.DataAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.utils.DataDummy;
 import com.iavariav.submission1.utils.GlideApp;
 
 import java.util.List;
@@ -27,12 +29,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private DetailViewModel viewModel;
     private List<DeskripsiEntity> modules;
+    private DataAdapter listAdapter;
 
     public static final String EXTRA_ID = "extra_id";
-    public static final String EXTRA_IMAGE = "extra_image";
-    public static final String EXTRA_TITTLE = "extra_tittle";
-    public static final String EXTRA_OVERVIEW = "extra_overview";
-    public static final String EXTRA_RELEASE_DATE = "extra_release_date";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +42,33 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initView();
         viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+        listAdapter = new DataAdapter(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        GlideApp.with(getApplicationContext()).load(getIntent().getStringExtra(EXTRA_IMAGE))
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String courseId = extras.getString(EXTRA_ID);
+            if (courseId != null) {
+                viewModel.setCourseId(courseId);
+                modules = viewModel.getModules();
+                listAdapter.setListCourses(modules);
+                populateCourse(String.valueOf(viewModel.getCourseId()));
+            }
+        }
+
+    }
+    private void populateCourse(String courseId) {
+        DeskripsiEntity deskripsiEntity = DataDummy.getCourse(courseId);
+        GlideApp.with(getApplicationContext()).load(deskripsiEntity.getImageURL())
                 .error(R.drawable.ic_broken_image_black)
                 .override(512, 512)
                 .into(imagePoster);
-        textTitle.setText(getIntent().getStringExtra(EXTRA_TITTLE));
-        textReleaseDate.setText(getIntent().getStringExtra(EXTRA_RELEASE_DATE));
-        textOverview.setText(getIntent().getStringExtra(EXTRA_OVERVIEW));
-//        textTitle.setText(getIntent().getStringExtra(EXTRA_TITTLE));
+
+        textTitle.setText(deskripsiEntity.gettitle());
+        textReleaseDate.setText(deskripsiEntity.getreleaseDate());
+        textOverview.setText(deskripsiEntity.getDeskripsi());
 
     }
 

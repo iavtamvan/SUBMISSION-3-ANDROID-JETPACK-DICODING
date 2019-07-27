@@ -12,7 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.detail.DetailActivity"
+            android:name=".ui.tvshow.detail.DetailTvShowActivity"
+            android:label="@string/title_activity_detail_tv_show"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.iavariav.submission1.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.movie.detail.DetailMovieActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

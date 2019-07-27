@@ -1,4 +1,4 @@
-package com.iavariav.submission1.ui.detail;
+package com.iavariav.submission1.ui.movie.detail;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
 
@@ -10,14 +10,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DetailViewModelTest {
-    private DetailViewModel viewModel;
+public class DetailMovieViewModelTest {
+    private DetailMovieViewModel viewModel;
     private DeskripsiEntity dummyEntity;
 
 
     @Before
     public void setUp() {
-        viewModel = new DetailViewModel();
+        viewModel = new DetailMovieViewModel();
         dummyEntity = (new DeskripsiEntity("420818",
                 "https://image.tmdb.org/t/p/w500/dzBtMocZuJbjLOXvrl4zGYigDzh.jpg",
                 "The Lion King",
@@ -44,7 +44,7 @@ public class DetailViewModelTest {
     @Test
     public void getModules() {
         viewModel.setCourseId(dummyEntity.getId());
-        List<DeskripsiEntity> moduleEntities = viewModel.getModules();
+        List<DeskripsiEntity> moduleEntities = viewModel.getMoviewModule();
         assertNotNull(moduleEntities);
         assertEquals(10, moduleEntities.size());
     }

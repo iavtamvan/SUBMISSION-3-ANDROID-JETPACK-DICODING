@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.iavariav.submission1.R;
-import com.iavariav.submission1.adapter.DataAdapter;
+import com.iavariav.submission1.adapter.TVShowAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.utils.DataDummy;
 
@@ -29,7 +29,7 @@ public class TVShowFragment extends Fragment {
 
     private RecyclerView rvCourse;
     private ProgressBar progressBar;
-    private DataAdapter dataAdapter;
+    private TVShowAdapter tvShowAdapter;
 
     private TvShowViewModel viewModel;
     private List<DeskripsiEntity> courses;
@@ -62,11 +62,11 @@ public class TVShowFragment extends Fragment {
         if (getActivity() != null) {
             viewModel = ViewModelProviders.of(this).get(TvShowViewModel.class);
             courses = viewModel.getDeskripsi();
-            dataAdapter = new DataAdapter(getActivity());
-            dataAdapter.setListCourses(DataDummy.generateDummytv());
+            tvShowAdapter = new TVShowAdapter(getActivity());
+            tvShowAdapter.setListCourses(DataDummy.generateDummytv());
             rvCourse.setLayoutManager(new LinearLayoutManager(getContext()));
             rvCourse.setHasFixedSize(true);
-            rvCourse.setAdapter(dataAdapter);
+            rvCourse.setAdapter(tvShowAdapter);
         }
     }
 

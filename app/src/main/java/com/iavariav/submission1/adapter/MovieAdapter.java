@@ -14,17 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
-import com.iavariav.submission1.ui.detail.DetailActivity;
+import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
 import com.iavariav.submission1.utils.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.AcademyViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewHolder> {
     private final Activity activity;
     private List<DeskripsiEntity> mCourses = new ArrayList<>();
 
-    public DataAdapter(Activity activity) {
+    public MovieAdapter(Activity activity) {
         this.activity = activity;
     }
 
@@ -49,10 +49,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.AcademyViewHol
     public void onBindViewHolder(@NonNull final AcademyViewHolder holder, final int position) {
         holder.tvTitle.setText(getListCourses().get(position).gettitle());
         holder.tvDescription.setText(getListCourses().get(position).getDeskripsi());
-        holder.tvDate.setText(String.format("Release ", getListCourses().get(position).getreleaseDate()));
+        holder.tvDate.setText( "Release : " +getListCourses().get(position).getreleaseDate());
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(activity, DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_ID, getListCourses().get(position).getId());
+            Intent intent = new Intent(activity, DetailMovieActivity.class);
+            intent.putExtra(DetailMovieActivity.EXTRA_ID, getListCourses().get(position).getId());
             activity.startActivity(intent);
 
         });

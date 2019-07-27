@@ -188,9 +188,18 @@ public class DataDummy {
 //        return modules;
 //    }
 
-    public static DeskripsiEntity getCourse(String courseId) {
+    public static DeskripsiEntity getMovie(String courseId) {
         for (int i = 0; i < generateDummymovie().size(); i++) {
             DeskripsiEntity entity = generateDummymovie().get(i);
+            if (entity.getId().equals(courseId)) {
+                return entity;
+            }
+        }
+        return null;
+    }
+    public static DeskripsiEntity getTvShow(String courseId) {
+        for (int i = 0; i < generateDummytv().size(); i++) {
+            DeskripsiEntity entity = generateDummytv().get(i);
             if (entity.getId().equals(courseId)) {
                 return entity;
             }

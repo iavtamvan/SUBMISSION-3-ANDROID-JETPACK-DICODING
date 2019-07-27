@@ -1,4 +1,4 @@
-package com.iavariav.submission1.ui.detail;
+package com.iavariav.submission1.ui.movie.detail;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,14 +10,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.iavariav.submission1.R;
-import com.iavariav.submission1.adapter.DataAdapter;
+import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.utils.DataDummy;
 import com.iavariav.submission1.utils.GlideApp;
 
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailMovieActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ImageView imagePoster;
@@ -27,22 +27,22 @@ public class DetailActivity extends AppCompatActivity {
     private View line1;
     private TextView textOverview;
 
-    private DetailViewModel viewModel;
+    private DetailMovieViewModel viewModel;
     private List<DeskripsiEntity> modules;
-    private DataAdapter listAdapter;
+    private MovieAdapter listAdapter;
 
     public static final String EXTRA_ID = "extra_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail_movie);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initView();
-        viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        listAdapter = new DataAdapter(this);
+        viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel.class);
+        listAdapter = new MovieAdapter(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -52,7 +52,7 @@ public class DetailActivity extends AppCompatActivity {
             String courseId = extras.getString(EXTRA_ID);
             if (courseId != null) {
                 viewModel.setCourseId(courseId);
-                modules = viewModel.getModules();
+                modules = viewModel.getMoviewModule();
                 listAdapter.setListCourses(modules);
                 populateCourse(String.valueOf(viewModel.getCourseId()));
             }
@@ -60,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
     private void populateCourse(String courseId) {
-        DeskripsiEntity deskripsiEntity = DataDummy.getCourse(courseId);
+        DeskripsiEntity deskripsiEntity = DataDummy.getMovie(courseId);
         GlideApp.with(getApplicationContext()).load(deskripsiEntity.getImageURL())
                 .error(R.drawable.ic_broken_image_black)
                 .override(512, 512)

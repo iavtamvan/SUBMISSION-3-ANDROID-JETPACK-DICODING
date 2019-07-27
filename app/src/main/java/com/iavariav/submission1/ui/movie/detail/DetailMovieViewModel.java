@@ -1,4 +1,4 @@
-package com.iavariav.submission1.ui.detail;
+package com.iavariav.submission1.ui.movie.detail;
 
 import androidx.lifecycle.ViewModel;
 
@@ -7,7 +7,7 @@ import com.iavariav.submission1.utils.DataDummy;
 
 import java.util.List;
 
-public class DetailViewModel extends ViewModel {
+public class DetailMovieViewModel extends ViewModel {
     private DeskripsiEntity mCourse;
     private String courseId;
 
@@ -21,7 +21,7 @@ public class DetailViewModel extends ViewModel {
         return mCourse;
     }
 
-    public List<DeskripsiEntity> getModules() {
+    public List<DeskripsiEntity> getMoviewModule() {
         return DataDummy.generateDummymovie();
     }
 

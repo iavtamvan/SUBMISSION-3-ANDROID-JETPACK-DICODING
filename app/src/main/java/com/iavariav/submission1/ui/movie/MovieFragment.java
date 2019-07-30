@@ -50,7 +50,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvCourse = view.findViewById(R.id.rv_academy);
+        rvCourse = view.findViewById(R.id.rv_movie);
         progressBar = view.findViewById(R.id.progress_bar);
     }
     @Override

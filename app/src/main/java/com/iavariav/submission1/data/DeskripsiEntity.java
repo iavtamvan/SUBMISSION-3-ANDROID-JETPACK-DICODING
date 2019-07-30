@@ -27,31 +27,16 @@ public class DeskripsiEntity {
         return imageURL;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
 
     public String gettitle() {
         return title;
-    }
-
-    public void settitle(String title) {
-        this.title = title;
     }
 
     public String getDeskripsi() {
         return overview;
     }
 
-    public void setDeskripsi(String overview) {
-        this.overview = overview;
-    }
-
     public String getreleaseDate() {
         return releaseDate;
-    }
-
-    public void setreleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 }

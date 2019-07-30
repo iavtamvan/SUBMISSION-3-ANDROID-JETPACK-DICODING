@@ -18,9 +18,6 @@ public class MovieViewModelTest {
         viewModel = new MovieViewModel();
     }
 
-    @After
-    public void tearDown() {
-    }
     @Test
     public void getDeskripsi() {
         List<DeskripsiEntity> courseEntities = viewModel.getDeskripsi();

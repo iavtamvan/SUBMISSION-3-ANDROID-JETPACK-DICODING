@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class DataDummy {
 
-    static String baseImageURL = "https://image.tmdb.org/t/p/w500";
+    private static String baseImageURL = "https://image.tmdb.org/t/p/w500";
     public static ArrayList<DeskripsiEntity> generateDummymovie() {
 
         ArrayList<DeskripsiEntity> movie = new ArrayList<>();
@@ -142,52 +142,6 @@ public class DataDummy {
 
         return tv;
     }
-
-//    public static ArrayList<ModuleEntity> generateDummyModules(String courseId) {
-//
-//        ArrayList<ModuleEntity> modules = new ArrayList<>();
-//
-//        modules.add(new ModuleEntity(String.format("%sm1", courseId),
-//                courseId,
-//                "Modul 0 : Introduction",
-//                0,
-//                null));
-//        modules.add(new ModuleEntity(String.format("%sm2", courseId),
-//                courseId,
-//                "Modul 1 : Teori 1",
-//                1,
-//                null));
-//        modules.add(new ModuleEntity(String.format("%sm3", courseId),
-//                courseId,
-//                "Latihan 1",
-//                2,
-//                null));
-//        modules.add(new ModuleEntity(String.format("%sm4", courseId),
-//                courseId,
-//                "Bedah Kode 1",
-//                3,
-//                null));
-//        modules.add(new ModuleEntity(String.format("%sm5", courseId),
-//                courseId,
-//                "Modul 2 : Teori 2",
-//                4,
-//                null));
-//
-//        modules.add(new ModuleEntity(String.format("%sm6", courseId),
-//                courseId,
-//                "Latihan 2",
-//                5,
-//                null));
-//
-//        modules.add(new ModuleEntity(String.format("%sm7", courseId),
-//                courseId,
-//                "Bedah Kode 2",
-//                6,
-//                null));
-//
-//        return modules;
-//    }
-
     public static DeskripsiEntity getMovie(String courseId) {
         for (int i = 0; i < generateDummymovie().size(); i++) {
             DeskripsiEntity entity = generateDummymovie().get(i);

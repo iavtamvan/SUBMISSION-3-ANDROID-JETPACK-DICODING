@@ -23,8 +23,6 @@ public class DetailTvShowActivity extends AppCompatActivity {
     private ImageView imagePoster;
     private TextView textTitle;
     private TextView textReleaseDate;
-    private TextView textDesc;
-    private View line1;
     private TextView textOverview;
 
     private DetailTVShowViewModel viewModel;
@@ -39,13 +37,12 @@ public class DetailTvShowActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initView();
-        viewModel = ViewModelProviders.of(this).get(DetailTVShowViewModel.class);
-        listAdapter = new MovieAdapter(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
+        listAdapter = new MovieAdapter(this);
+        initView();
+        viewModel = ViewModelProviders.of(this).get(DetailTVShowViewModel.class);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String courseId = extras.getString(EXTRA_ID);
@@ -56,7 +53,6 @@ public class DetailTvShowActivity extends AppCompatActivity {
                 populateCourse(String.valueOf(viewModel.getCourseId()));
             }
         }
-
 
     }
 
@@ -78,8 +74,6 @@ public class DetailTvShowActivity extends AppCompatActivity {
         imagePoster = findViewById(R.id.image_poster);
         textTitle = findViewById(R.id.text_title);
         textReleaseDate = findViewById(R.id.text_release_date);
-        textDesc = findViewById(R.id.text_desc);
-        line1 = findViewById(R.id.line1);
         textOverview = findViewById(R.id.text_overview);
     }
 }

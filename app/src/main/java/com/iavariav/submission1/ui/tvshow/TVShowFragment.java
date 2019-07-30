@@ -28,17 +28,12 @@ import java.util.List;
 public class TVShowFragment extends Fragment {
 
     private RecyclerView rvCourse;
-    private ProgressBar progressBar;
     private TVShowAdapter tvShowAdapter;
 
     private TvShowViewModel viewModel;
     private List<DeskripsiEntity> courses;
     public TVShowFragment() {
         // Required empty public constructor
-    }
-
-    public static Fragment newInstance() {
-        return new TVShowFragment();
     }
 
 
@@ -53,8 +48,7 @@ public class TVShowFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvCourse = view.findViewById(R.id.rv_academy);
-        progressBar = view.findViewById(R.id.progress_bar);
+        rvCourse = view.findViewById(R.id.rv_tvshow);
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

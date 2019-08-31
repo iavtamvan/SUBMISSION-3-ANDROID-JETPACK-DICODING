@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +19,9 @@ import android.widget.ProgressBar;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.utils.ViewModelFactory;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter movieAdapter;
 
     private MovieViewModel viewModel;
-    private List<DeskripsiEntity> courses;
+    private List<MovieModel> courses;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -57,14 +60,37 @@ public class MovieFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getActivity() != null) {
-            viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-            courses = viewModel.getDeskripsi();
+//            viewModel = ViewModelProviders.of(this).get(AcademyViewModel.class);
+            viewModel = obtainViewModel(getActivity());
+
+            viewModel.getCourses().observe(this, courses -> {
+                progressBar.setVisibility(View.GONE);
+                movieAdapter.setListCourses(courses);
+                movieAdapter.notifyDataSetChanged();
+            });
             movieAdapter = new MovieAdapter(getActivity());
-            movieAdapter.setListCourses(DataDummy.generateDummymovie());
+            movieAdapter.setListCourses(courses);
             rvCourse.setLayoutManager(new LinearLayoutManager(getContext()));
             rvCourse.setHasFixedSize(true);
             rvCourse.setAdapter(movieAdapter);
         }
+
+
+//        if (getActivity() != null) {
+//            viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+//            courses = viewModel.getCourses();
+//            movieAdapter = new MovieAdapter(getActivity());
+//            movieAdapter.setListCourses(DataDummy.generateDummymovie());
+//            rvCourse.setLayoutManager(new LinearLayoutManager(getContext()));
+//            rvCourse.setHasFixedSize(true);
+//            rvCourse.setAdapter(movieAdapter);
+//        }
+    }
+    @NonNull
+    private static MovieViewModel obtainViewModel(FragmentActivity activity) {
+        // Use a Factory to inject dependencies into the ViewModel
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+        return ViewModelProviders.of(activity, factory).get(MovieViewModel.class);
     }
 
 

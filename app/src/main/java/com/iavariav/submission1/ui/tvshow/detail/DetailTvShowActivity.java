@@ -49,7 +49,7 @@ public class DetailTvShowActivity extends AppCompatActivity {
             if (courseId != null) {
                 viewModel.setCourseId(courseId);
                 modules = viewModel.getTvModule();
-                listAdapter.setListCourses(modules);
+//                listAdapter.setListCourses(modules);
                 populateCourse(String.valueOf(viewModel.getCourseId()));
             }
         }

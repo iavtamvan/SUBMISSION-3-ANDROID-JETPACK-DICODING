@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import com.iavariav.submission1.ui.ProfilFragment;
 import com.iavariav.submission1.ui.movie.MovieFragment;
 import com.iavariav.submission1.ui.tvshow.TVShowFragment;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("Movie", MovieFragment.class)
                 .add("TV Show", TVShowFragment.class)
+                .add("Profil", ProfilFragment.class)
                 .create());
 
         ViewPager viewPager = findViewById(R.id.viewpager);

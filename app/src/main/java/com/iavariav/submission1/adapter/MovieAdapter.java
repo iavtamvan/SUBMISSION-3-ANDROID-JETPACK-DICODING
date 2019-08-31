@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.response.MovieModel;
+import com.iavariav.submission1.ui.movie.MovieViewModel;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
 import com.iavariav.submission1.utils.GlideApp;
 
@@ -22,17 +24,17 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewHolder> {
     private final Activity activity;
-    private List<DeskripsiEntity> mCourses = new ArrayList<>();
+    private List<MovieModel> mCourses = new ArrayList<>();
 
     public MovieAdapter(Activity activity) {
         this.activity = activity;
     }
 
-    private List<DeskripsiEntity> getListCourses() {
+    private List<MovieModel> getListCourses() {
         return mCourses;
     }
 
-    public void setListCourses(List<DeskripsiEntity> listCourses) {
+    public void setListCourses(List<MovieModel> listCourses) {
         if (listCourses == null) return;
         this.mCourses.clear();
         this.mCourses.addAll(listCourses);
@@ -47,9 +49,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewH
 
     @Override
     public void onBindViewHolder(@NonNull final AcademyViewHolder holder, final int position) {
-        holder.tvTitle.setText(getListCourses().get(position).gettitle());
-        holder.tvDescription.setText(getListCourses().get(position).getDeskripsi());
-        holder.tvDate.setText( "Release : " +getListCourses().get(position).getreleaseDate());
+        holder.tvTitle.setText(getListCourses().get(position).getTitle());
+        holder.tvDescription.setText(getListCourses().get(position).getOverview());
+        holder.tvDate.setText( "Release : " +getListCourses().get(position).getRelease_date());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(activity, DetailMovieActivity.class);
             intent.putExtra(DetailMovieActivity.EXTRA_ID, getListCourses().get(position).getId());
@@ -58,7 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewH
         });
 
         GlideApp.with(holder.itemView.getContext())
-                .load(getListCourses().get(position).getImageURL())
+                .load(getListCourses().get(position).getPoster_path())
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error))
                 .into(holder.imgPoster);
     }

@@ -53,7 +53,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             if (courseId != null) {
                 viewModel.setCourseId(courseId);
                 modules = viewModel.getMoviewModule();
-                listAdapter.setListCourses(modules);
+//                listAdapter.setListCourses(modules);
                 populateCourse(String.valueOf(viewModel.getCourseId()));
             }
         }

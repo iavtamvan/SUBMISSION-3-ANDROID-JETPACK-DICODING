@@ -3,6 +3,7 @@ package com.iavariav.submission1.data.remote;
 import android.os.Handler;
 
 import com.iavariav.submission1.data.remote.response.MovieModel;
+import com.iavariav.submission1.data.remote.response.TvShowModel;
 import com.iavariav.submission1.utils.JsonHelper;
 
 import java.util.List;
@@ -26,7 +27,11 @@ public class RemoteRepository {
 
     public void getMovie(LoadMovieCallback callback) {
         Handler handler = new Handler();
-        handler.postDelayed(() -> callback.onAllCoursesReceived(jsonHelper.loadCourses()), SERVICE_LATENCY_IN_MILLIS);
+        handler.postDelayed(() -> callback.onAllCoursesReceived(jsonHelper.loadMovie()), SERVICE_LATENCY_IN_MILLIS);
+    }
+    public void getTv(LoadTvCallback callback) {
+        Handler handler = new Handler();
+        handler.postDelayed(() -> callback.onAllCoursesReceived(jsonHelper.loadTv()), SERVICE_LATENCY_IN_MILLIS);
     }
 
 //    public void getModules(String courseId, LoadModulesCallback callback) {
@@ -41,6 +46,11 @@ public class RemoteRepository {
 
     public interface LoadMovieCallback {
         void onAllCoursesReceived(List<MovieModel> movieModels);
+
+        void onDataNotAvailable();
+    }
+    public interface LoadTvCallback {
+        void onAllCoursesReceived(List<TvShowModel> tvShowModels);
 
         void onDataNotAvailable();
     }

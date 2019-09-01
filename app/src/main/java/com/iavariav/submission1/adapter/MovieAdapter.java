@@ -60,7 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewH
         });
 
         GlideApp.with(holder.itemView.getContext())
-                .load(getListCourses().get(position).getPoster_path())
+                .load("https://image.tmdb.org/t/p/w500" + getListCourses().get(position).getPoster_path())
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error))
                 .into(holder.imgPoster);
     }

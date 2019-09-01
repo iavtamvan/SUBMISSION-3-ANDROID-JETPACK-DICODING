@@ -3,6 +3,7 @@ package com.iavariav.submission1.utils;
 import android.app.Application;
 
 import com.iavariav.submission1.data.remote.response.MovieModel;
+import com.iavariav.submission1.data.remote.response.TvShowModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +36,7 @@ public class JsonHelper {
         }
     }
 
-    public List<MovieModel> loadCourses() {
+    public List<MovieModel> loadMovie() {
         ArrayList<MovieModel> list = new ArrayList<>();
 
         try {
@@ -75,6 +76,51 @@ public class JsonHelper {
                         overview,
                         release_date
 
+                );
+                list.add(courseResponse);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public List<TvShowModel> loadTv() {
+        ArrayList<TvShowModel> list = new ArrayList<>();
+
+        try {
+            JSONObject responseObject = new JSONObject(parsingFileToString("DataTv.json"));
+            JSONArray listArray = responseObject.getJSONArray("results");
+            for (int i = 0; i < listArray.length(); i++) {
+                JSONObject course = listArray.getJSONObject(i);
+
+                String original_name = course.getString("original_name");
+                String genre_ids = course.getString("genre_ids");
+                String name = course.getString("name");
+                String popularity = course.getString("popularity");
+                String origin_country = course.getString("origin_country");
+                String vote_count = course.getString("vote_count");
+                String first_air_date = course.getString("first_air_date");
+                String backdrop_path = course.getString("backdrop_path");
+                String original_language = course.getString("original_language");
+                String id = course.getString("id");
+                String vote_average = course.getString("vote_average");
+                String overview = course.getString("overview");
+                String poster_path = course.getString("poster_path");
+
+                TvShowModel courseResponse = new TvShowModel(
+                        first_air_date,
+                        overview,
+                        original_language,
+                        genre_ids,
+                        poster_path,
+                        origin_country,
+                        backdrop_path,
+                        original_name,
+                        popularity,
+                        vote_average,
+                        name,
+                        id,
+                        vote_count
                 );
                 list.add(courseResponse);
             }

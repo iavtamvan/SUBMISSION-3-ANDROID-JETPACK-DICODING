@@ -19,6 +19,7 @@ public class MovieModel implements Parcelable {
     String overview;
     String release_date;
 
+
     public MovieModel(String popularity, String vote_count, String video, String poster_path, String id, String adult, String backdrop_path, String original_language, String original_title, String genre_ids, String title, String vote_average, String overview, String release_date) {
         this.popularity = popularity;
         this.vote_count = vote_count;

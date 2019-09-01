@@ -12,6 +12,7 @@ import com.iavariav.submission1.ui.movie.MovieViewModel;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieViewModel;
 import com.iavariav.submission1.ui.tvshow.TvShowViewModel;
+import com.iavariav.submission1.ui.tvshow.detail.DetailTVShowViewModel;
 
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private static volatile ViewModelFactory INSTANCE;
@@ -49,10 +50,10 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             //noinspection unchecked
             return (T) new DetailMovieViewModel(mAcademyRepository);
         }
-//        else if (modelClass.isAssignableFrom(CourseReaderViewModel.class)) {
-//            //noinspection unchecked
-//            return (T) new CourseReaderViewModel(mAcademyRepository);
-//        }
+        else if (modelClass.isAssignableFrom(DetailTVShowViewModel.class)) {
+            //noinspection unchecked
+            return (T) new DetailTVShowViewModel(mAcademyRepository);
+        }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

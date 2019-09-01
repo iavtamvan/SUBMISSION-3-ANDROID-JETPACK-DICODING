@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
@@ -25,17 +27,22 @@ import java.util.List;
 
 public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.AcademyViewHolder> {
     private final Activity activity;
-    private List<TvShowModel> mCourses = new ArrayList<>();
+    private List<TvShowEntity> mCourses = new ArrayList<>();
 
     public TVShowAdapter(Activity activity) {
         this.activity = activity;
     }
 
-    private List<TvShowModel> getListCourses() {
+    private List<TvShowEntity> getListCourses() {
         return mCourses;
     }
 
-    public void setListCourses(List<TvShowModel> listCourses) {
+    public void setModules(List<TvShowEntity> modules) {
+        if (modules == null) return;
+        mCourses.clear();
+        mCourses.addAll(modules);
+    }
+    public void setListCourses(List<TvShowEntity> listCourses) {
         if (listCourses == null) return;
         this.mCourses.clear();
         this.mCourses.addAll(listCourses);

@@ -2,6 +2,10 @@ package com.iavariav.submission1.ui.tvshow;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,19 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-
 import com.iavariav.submission1.R;
-import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.adapter.TVShowAdapter;
-import com.iavariav.submission1.data.DeskripsiEntity;
-import com.iavariav.submission1.data.remote.response.MovieModel;
-import com.iavariav.submission1.data.remote.response.TvShowModel;
-import com.iavariav.submission1.ui.movie.MovieViewModel;
-import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.utils.ViewModelFactory;
 
 import java.util.List;
@@ -38,7 +32,7 @@ public class TVShowFragment extends Fragment {
     private TVShowAdapter tvShowAdapter;
 
     private TvShowViewModel viewModel;
-    private List<TvShowModel> courses;
+    private List<TvShowEntity> courses;
     public TVShowFragment() {
         // Required empty public constructor
     }

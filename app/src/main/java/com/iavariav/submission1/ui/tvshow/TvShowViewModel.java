@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.MovieTVRepository;
+import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
 import com.iavariav.submission1.utils.DataDummy;
@@ -19,7 +20,7 @@ public class TvShowViewModel extends ViewModel {
         this.academyRepository = mAcademyRepository;
     }
 
-    LiveData<List<TvShowModel>> getCourses() {
+    LiveData<List<TvShowEntity>> getCourses() {
         return academyRepository.getAllTv();
     }
 }

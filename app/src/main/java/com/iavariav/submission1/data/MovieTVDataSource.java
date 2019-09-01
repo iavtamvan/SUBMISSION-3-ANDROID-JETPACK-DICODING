@@ -3,6 +3,7 @@ package com.iavariav.submission1.data;
 import androidx.lifecycle.LiveData;
 
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
 
@@ -15,7 +16,8 @@ public interface MovieTVDataSource {
 
 
 
-    LiveData<List<TvShowModel>> getAllTv();
+    LiveData<List<TvShowEntity>> getAllTv();
+    LiveData<TvShowEntity> getAllTvDetail(String courseId);
 
 //    LiveData<DeskripsiEntity> getCourseWithModules(String courseId);
 //

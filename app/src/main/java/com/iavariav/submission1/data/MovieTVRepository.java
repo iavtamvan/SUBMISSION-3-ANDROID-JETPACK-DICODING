@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.iavariav.submission1.data.remote.RemoteRepository;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
 
@@ -93,32 +94,23 @@ public class MovieTVRepository implements MovieTVDataSource{
         return courseResult;
     }
 
-
     @Override
-    public LiveData<List<TvShowModel>> getAllTv() {
-        MutableLiveData<List<TvShowModel>> courseResults = new MutableLiveData<>();
+    public LiveData<List<TvShowEntity>> getAllTv() {
+        MutableLiveData<List<TvShowEntity>> courseResults = new MutableLiveData<>();
 
         remoteRepository.getTv(new RemoteRepository.LoadTvCallback() {
             @Override
             public void onAllCoursesReceived(List<TvShowModel> courseResponses) {
-                ArrayList<TvShowModel> courseList = new ArrayList<>();
+                ArrayList<TvShowEntity> courseList = new ArrayList<>();
                 for (int i = 0; i < courseResponses.size(); i++) {
                     TvShowModel response = courseResponses.get(i);
-                    TvShowModel course = new TvShowModel(
-                            response.getFirstAirDate(),
-                            response.getOverview(),
-                            response.getOriginalLanguage(),
-                            response.getGenreIds(),
-                            response.getPosterPath(),
-                            response.getOriginCountry(),
-                            response.getBackdropPath(),
-                            response.getOriginalName(),
-                            response.getPopularity(),
-                            response.getVoteAverage(),
-                            response.getName(),
+                    TvShowEntity course = new TvShowEntity(
                             response.getId(),
-                            response.getVoteCount()
-                            );
+                            response.getName(),
+                            response.getFirstAirDate(),
+                            response.getPosterPath(),
+                            response.getOverview()
+                    );
 
                     courseList.add(course);
                 }
@@ -132,5 +124,37 @@ public class MovieTVRepository implements MovieTVDataSource{
         });
         return courseResults;
     }
+
+    @Override
+    public LiveData<TvShowEntity> getAllTvDetail(String courseId) {
+        MutableLiveData<TvShowEntity> courseResult = new MutableLiveData<>();
+
+        remoteRepository.getTv(new RemoteRepository.LoadTvCallback() {
+            @Override
+            public void onAllCoursesReceived(List<TvShowModel> courseResponses) {
+                for (int i = 0; i < courseResponses.size(); i++) {
+                    TvShowModel response = courseResponses.get(i);
+                    if (response.getId().equals(courseId)) {
+                        TvShowEntity course = new TvShowEntity(
+                                response.getId(),
+                                response.getName(),
+                                response.getFirstAirDate(),
+                                response.getPosterPath(),
+                                response.getOverview()
+                        );
+                        courseResult.postValue(course);
+                    }
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+
+        return courseResult;
+    }
+
 
 }

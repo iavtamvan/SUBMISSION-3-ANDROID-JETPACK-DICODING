@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.entity.MovieEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.utils.DataDummy;
 import com.iavariav.submission1.utils.ViewModelFactory;
@@ -34,7 +35,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter movieAdapter;
 
     private MovieViewModel viewModel;
-    private List<MovieModel> courses;
+    private List<MovieEntity> courses;
 
     public MovieFragment() {
         // Required empty public constructor

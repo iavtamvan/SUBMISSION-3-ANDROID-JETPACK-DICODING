@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.entity.MovieEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.ui.movie.MovieViewModel;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
@@ -24,17 +25,24 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewHolder> {
     private final Activity activity;
-    private List<MovieModel> mCourses = new ArrayList<>();
+    private List<MovieEntity> mCourses = new ArrayList<>();
 
     public MovieAdapter(Activity activity) {
         this.activity = activity;
     }
 
-    private List<MovieModel> getListCourses() {
+    private List<MovieEntity> getListCourses() {
         return mCourses;
     }
 
-    public void setListCourses(List<MovieModel> listCourses) {
+
+    public void setModules(List<MovieEntity> modules) {
+        if (modules == null) return;
+        mCourses.clear();
+        mCourses.addAll(modules);
+    }
+
+    public void setListCourses(List<MovieEntity> listCourses) {
         if (listCourses == null) return;
         this.mCourses.clear();
         this.mCourses.addAll(listCourses);

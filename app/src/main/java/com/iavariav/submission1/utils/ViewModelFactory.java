@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.iavariav.submission1.data.MovieTVRepository;
 import com.iavariav.submission1.di.Injection;
 import com.iavariav.submission1.ui.movie.MovieViewModel;
+import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
+import com.iavariav.submission1.ui.movie.detail.DetailMovieViewModel;
 import com.iavariav.submission1.ui.tvshow.TvShowViewModel;
 
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
@@ -43,10 +45,10 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             //noinspection unchecked
             return (T) new TvShowViewModel(mAcademyRepository);
         }
-//        else if (modelClass.isAssignableFrom(BookmarkViewModel.class)) {
-//            //noinspection unchecked
-//            return (T) new BookmarkViewModel(mAcademyRepository);
-//        }
+        else if (modelClass.isAssignableFrom(DetailMovieViewModel.class)) {
+            //noinspection unchecked
+            return (T) new DetailMovieViewModel(mAcademyRepository);
+        }
 //        else if (modelClass.isAssignableFrom(CourseReaderViewModel.class)) {
 //            //noinspection unchecked
 //            return (T) new CourseReaderViewModel(mAcademyRepository);

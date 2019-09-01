@@ -1,19 +1,26 @@
 package com.iavariav.submission1.ui.movie.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.utils.DataDummy;
 import com.iavariav.submission1.utils.GlideApp;
+import com.iavariav.submission1.utils.ViewModelFactory;
 
 import java.util.List;
 
@@ -28,7 +35,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     private TextView textOverview;
 
     private DetailMovieViewModel viewModel;
-    private List<DeskripsiEntity> modules;
+    private List<MovieEntity> modules;
     private MovieAdapter listAdapter;
 
     public static final String EXTRA_ID = "extra_id";
@@ -41,34 +48,65 @@ public class DetailMovieActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initView();
-        viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel.class);
+//        viewModel = ViewModelProviders.of(this).get(DetailMovieViewModel.class);
+        viewModel = obtainViewModel(this);
         listAdapter = new MovieAdapter(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+//
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            String courseId = extras.getString(EXTRA_ID);
+//            if (courseId != null) {
+//                viewModel.setCourseId(courseId);
+//                modules = viewModel.getMoviewModule();
+////                listAdapter.setListCourses(modules);
+//                populateCourse(String.valueOf(viewModel.getCourseId()));
+//            }
+//        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String courseId = extras.getString(EXTRA_ID);
             if (courseId != null) {
                 viewModel.setCourseId(courseId);
-                modules = viewModel.getMoviewModule();
-//                listAdapter.setListCourses(modules);
-                populateCourse(String.valueOf(viewModel.getCourseId()));
+//                modules = viewModel.getModules();
+//                viewModel.getMovie().observe(this, moduleEntities -> {
+//                    listAdapter.setModules(moduleEntities);
+//                });
+                listAdapter.notifyDataSetChanged();
+                listAdapter.setModules(modules);
+//                populateCourse(String.valueOf(viewModel.getCourseId()));
+
+                viewModel.getCourse().observe(this, courseEntity -> {
+                    if (courseEntity != null) {
+                        populateCourse(courseEntity); // koskkk
+                    }
+                });
             }
         }
 
     }
-    private void populateCourse(String courseId) {
-        DeskripsiEntity deskripsiEntity = DataDummy.getMovie(courseId);
-        GlideApp.with(getApplicationContext()).load(deskripsiEntity.getImageURL())
-                .error(R.drawable.ic_broken_image_black)
-                .override(512, 512)
-                .into(imagePoster);
 
-        textTitle.setText(deskripsiEntity.gettitle());
-        textReleaseDate.setText(deskripsiEntity.getreleaseDate());
-        textOverview.setText(deskripsiEntity.getDeskripsi());
+    @NonNull
+    private static DetailMovieViewModel obtainViewModel(AppCompatActivity activity) {
+        // Use a Factory to inject dependencies into the ViewModel
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
+
+        return ViewModelProviders.of(activity, factory).get(DetailMovieViewModel.class);
+    }
+
+    private void populateCourse(MovieEntity courseEntity) {
+        textTitle.setText(courseEntity.getTitle());
+        textDesc.setText(courseEntity.getOverview());
+        textReleaseDate.setText(String.format("Release Date %s", courseEntity.getRelease_date()));
+
+        GlideApp.with(getApplicationContext())
+                .load("https://image.tmdb.org/t/p/w500" + courseEntity.getPoster_path())
+                .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error))
+                .into(imagePoster);
 
     }
 

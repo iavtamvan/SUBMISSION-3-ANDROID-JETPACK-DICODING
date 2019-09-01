@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.iavariav.submission1.data.MovieTVRepository;
+import com.iavariav.submission1.data.remote.entity.MovieEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class MovieViewModel extends ViewModel {
         this.academyRepository = mAcademyRepository;
     }
 
-    LiveData<List<MovieModel>> getCourses() {
+    LiveData<List<MovieEntity>> getCourses() {
         return academyRepository.getAllMovie();
     }
 }

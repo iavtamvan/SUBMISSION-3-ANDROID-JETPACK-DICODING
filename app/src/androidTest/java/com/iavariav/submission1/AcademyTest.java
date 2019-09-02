@@ -1,7 +1,10 @@
 package com.iavariav.submission1;
 
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.rule.ActivityTestRule;
+
+import com.iavariav.submission1.utils.EspressoIdlingResource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,19 +25,40 @@ public class AcademyTest {
 
     @Before
     public void setUp() {
-
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getEspressoIdlingResource());
     }
 
     @After
     public void tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource());
     }
-
     @Test
     public void toDetailActivityTest() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()));
         onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        onView(withId(R.id.tv_item_title)).check(matches(isDisplayed()));
-        onView(withId(R.id.tv_item_title)).check(matches(withText("The Lion King")));
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.text_title)).check(matches(isDisplayed()));
+        onView(withId(R.id.text_title)).check(matches(withText("The Old Man & the Gun")));
     }
+
+//    @Test
+//    public void toReaderActivityTest() {
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()));
+//        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+//    }
 }

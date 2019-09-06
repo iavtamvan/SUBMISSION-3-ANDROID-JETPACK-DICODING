@@ -3,22 +3,45 @@ package com.iavariav.submission1.data.remote.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TvShowEntity implements Parcelable {
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
+public class TvShowEntity{
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    @ColumnInfo(name = "id")
     private String id;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "firstAirDate")
     private String firstAirDate;
+
+    @ColumnInfo(name = "posterPath")
     private String posterPath;
+
+    @ColumnInfo(name = "overview")
     private String overview;
+
+    @ColumnInfo(name = "favorite")
+    boolean favorite;
 
     public TvShowEntity() {
     }
 
-    public TvShowEntity(String id, String name, String firstAirDate, String posterPath, String overview) {
+    public TvShowEntity(@NonNull String id, String name, String firstAirDate, String posterPath, String overview, Boolean favorite) {
         this.id = id;
         this.name = name;
         this.firstAirDate = firstAirDate;
         this.posterPath = posterPath;
         this.overview = overview;
+        if (favorite != null) {
+            this.favorite = false;
+        }
     }
 
     public String getId() {
@@ -61,41 +84,12 @@ public class TvShowEntity implements Parcelable {
         this.overview = overview;
     }
 
-    public static Creator<TvShowEntity> getCREATOR() {
-        return CREATOR;
+    public boolean isFavorite() {
+        return favorite;
     }
 
-    protected TvShowEntity(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        firstAirDate = in.readString();
-        posterPath = in.readString();
-        overview = in.readString();
+    public void setFavorite(boolean mBookmarked) {
+        this.favorite = mBookmarked;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(firstAirDate);
-        dest.writeString(posterPath);
-        dest.writeString(overview);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<TvShowEntity> CREATOR = new Creator<TvShowEntity>() {
-        @Override
-        public TvShowEntity createFromParcel(Parcel in) {
-            return new TvShowEntity(in);
-        }
-
-        @Override
-        public TvShowEntity[] newArray(int size) {
-            return new TvShowEntity[size];
-        }
-    };
 }

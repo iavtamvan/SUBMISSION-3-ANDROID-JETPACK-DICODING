@@ -15,14 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.adapter.MovieAdapter;
-import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.response.MovieModel;
-import com.iavariav.submission1.utils.DataDummy;
 import com.iavariav.submission1.utils.ViewModelFactory;
+import com.iavariav.submission1.vo.Resource;
 
 import java.util.List;
 
@@ -63,17 +62,32 @@ public class MovieFragment extends Fragment {
         if (getActivity() != null) {
 //            viewModel = ViewModelProviders.of(this).get(AcademyViewModel.class);
             viewModel = obtainViewModel(getActivity());
+            viewModel.setUsername("Dicoding");
+            viewModel.getCourses.observe(this, courses -> {
+                if (courses != null) {
+                    switch (courses.status) {
+                        case LOADING:
+                            progressBar.setVisibility(View.VISIBLE);
+                            break;
+                        case SUCCESS:
+                            progressBar.setVisibility(View.GONE);
+                            movieAdapter.setListCourses(courses.data);
+                            movieAdapter.notifyDataSetChanged();
+                            break;
+                        case ERROR:
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                            break;
 
-            viewModel.getCourses().observe(this, courses -> {
-                progressBar.setVisibility(View.GONE);
-                movieAdapter.setListCourses(courses);
-                movieAdapter.notifyDataSetChanged();
+                    }
+                }
             });
             movieAdapter = new MovieAdapter(getActivity());
             movieAdapter.setListCourses(courses);
             rvCourse.setLayoutManager(new LinearLayoutManager(getContext()));
             rvCourse.setHasFixedSize(true);
             rvCourse.setAdapter(movieAdapter);
+
         }
 
 

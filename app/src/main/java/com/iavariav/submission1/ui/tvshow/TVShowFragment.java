@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.iavariav.submission1.R;
+import com.iavariav.submission1.adapter.MovieAdapter;
 import com.iavariav.submission1.adapter.TVShowAdapter;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.utils.ViewModelFactory;
@@ -59,10 +61,25 @@ public class TVShowFragment extends Fragment {
 //            viewModel = ViewModelProviders.of(this).get(AcademyViewModel.class);
             viewModel = obtainViewModel(getActivity());
 
-            viewModel.getCourses().observe(this, courses -> {
-                progressBar.setVisibility(View.GONE);
-                tvShowAdapter.setListCourses(courses);
-                tvShowAdapter.notifyDataSetChanged();
+            viewModel.setUsername("Dicoding");
+            viewModel.getCourses.observe(this, courses -> {
+                if (courses != null) {
+                    switch (courses.status) {
+                        case LOADING:
+                            progressBar.setVisibility(View.VISIBLE);
+                            break;
+                        case SUCCESS:
+                            progressBar.setVisibility(View.GONE);
+                            tvShowAdapter.setListCourses(courses.data);
+                            tvShowAdapter.notifyDataSetChanged();
+                            break;
+                        case ERROR:
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                }
             });
             tvShowAdapter = new TVShowAdapter(getActivity());
             tvShowAdapter.setListCourses(courses);

@@ -1,14 +1,19 @@
 package com.iavariav.submission1.data;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
+import com.iavariav.submission1.data.remote.ApiResponse;
 import com.iavariav.submission1.data.remote.RemoteRepository;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.MovieWithTv;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
+import com.iavariav.submission1.utils.AppExecutors;
+import com.iavariav.submission1.vo.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,144 +21,213 @@ import java.util.List;
 public class MovieTVRepository implements MovieTVDataSource{
     private volatile static MovieTVRepository INSTANCE = null;
 
+    private final LocalRepository localRepository;
     private final RemoteRepository remoteRepository;
+    private final AppExecutors appExecutors;
 
-    public MovieTVRepository(@NonNull RemoteRepository remoteRepository) {
+    public MovieTVRepository(LocalRepository localRepository, RemoteRepository remoteRepository, AppExecutors appExecutors) {
+        this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
+        this.appExecutors = appExecutors;
     }
 
-    public static MovieTVRepository getInstance(RemoteRepository remoteData) {
+    public static MovieTVRepository getInstance(LocalRepository localRepository, RemoteRepository remoteData, AppExecutors appExecutors) {
         if (INSTANCE == null) {
             synchronized (MovieTVRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new MovieTVRepository(remoteData);
+                    INSTANCE = new MovieTVRepository(localRepository, remoteData, appExecutors);
                 }
             }
         }
         return INSTANCE;
     }
-
     @Override
-    public LiveData<List<MovieEntity>> getAllMovie() {
-        MutableLiveData<List<MovieEntity>> courseResults = new MutableLiveData<>();
-
-        remoteRepository.getMovie(new RemoteRepository.LoadMovieCallback() {
+    public LiveData<Resource<List<MovieEntity>>> getAllMovie() {
+        return new NetworkBoundResource<List<MovieEntity>, List<MovieModel>>(appExecutors) {
             @Override
-            public void onAllCoursesReceived(List<MovieModel> courseResponses) {
-                ArrayList<MovieEntity> courseList = new ArrayList<>();
-                for (int i = 0; i < courseResponses.size(); i++) {
-                    MovieModel response = courseResponses.get(i);
-                    MovieEntity course = new MovieEntity(response.getId(),
-                            response.getPoster_path(),
-                            response.getTitle(),
-                            response.getRelease_date(),
-                            response.getOverview()
-                            );
+            public LiveData<List<MovieEntity>> loadFromDB() {
+                return localRepository.getAllCourses();
+            }
 
-                    courseList.add(course);
+            @Override
+            public Boolean shouldFetch(List<MovieEntity> data) {
+                return (data == null) || (data.size() == 0);
+            }
+
+            @Override
+            public LiveData<ApiResponse<List<MovieModel>>> createCall() {
+                return remoteRepository.getMovie();
+            }
+
+            @Override
+            public void saveCallResult(List<MovieModel> courseResponses) {
+                List<MovieEntity> courseEntities = new ArrayList<>();
+
+                for (MovieModel courseResponse : courseResponses) {
+
+                    courseEntities.add(new MovieEntity(
+                            courseResponse.getId(),
+                            courseResponse.getPoster_path(),
+                            courseResponse.getTitle(),
+                            courseResponse.getRelease_date(),
+                            courseResponse.getOverview(), null
+                    ));
                 }
-                courseResults.postValue(courseList);
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-
+                localRepository.insertMovie(courseEntities);
             }
-        });
-        return courseResults;
+        }.asLiveData();
     }
 
     @Override
-    public LiveData<MovieEntity> getAllMovieDetail(String courseId) {
-        MutableLiveData<MovieEntity> courseResult = new MutableLiveData<>();
-
-        remoteRepository.getMovie(new RemoteRepository.LoadMovieCallback() {
+    public LiveData<Resource<MovieWithTv>> getAllMovieDetail(final String courseId) {
+        return new NetworkBoundResource<MovieWithTv, List<MovieModel>>(appExecutors) {
             @Override
-            public void onAllCoursesReceived(List<MovieModel> courseResponses) {
-                for (int i = 0; i < courseResponses.size(); i++) {
-                    MovieModel response = courseResponses.get(i);
-                    if (response.getId().equals(courseId)) {
-                        MovieEntity course = new MovieEntity(
-                                response.getId(),
-                                response.getPoster_path(),
-                                response.getTitle(),
-                                response.getRelease_date(),
-                                response.getOverview()
-                        );
-                        courseResult.postValue(course);
-                    }
+            protected LiveData<MovieWithTv> loadFromDB() {
+                return localRepository.getCourseWithModules(courseId);
+            }
+
+            @Override
+            protected Boolean shouldFetch(MovieWithTv courseWithModule) {
+                return (courseWithModule == null || courseWithModule.mCourse == null);
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<MovieModel>>> createCall() {
+                return remoteRepository.getAllModulesByCourseAsLiveData(courseId);
+            }
+
+            @Override
+            protected void saveCallResult(List<MovieModel> moduleResponses) {
+
+                List<MovieEntity> moduleEntities = new ArrayList<>();
+
+                for (MovieModel moduleResponse : moduleResponses) {
+                    moduleEntities.add(new MovieEntity(courseId, moduleResponse.getPoster_path(), moduleResponse.getTitle(), moduleResponse.getRelease_date(), moduleResponse.getOverview(), null));
                 }
+
+                localRepository.insertMovie(moduleEntities);
             }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
-
-        return courseResult;
+        }.asLiveData();
     }
 
     @Override
-    public LiveData<List<TvShowEntity>> getAllTv() {
-        MutableLiveData<List<TvShowEntity>> courseResults = new MutableLiveData<>();
+    public void setCourseBookmark(MovieEntity course, boolean state) {
 
-        remoteRepository.getTv(new RemoteRepository.LoadTvCallback() {
+        Runnable runnable = () -> localRepository.setCourseBookmark(course, state);
+
+        appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public LiveData<Resource<PagedList<MovieEntity>>> getBookmarkedCoursesPaged() {
+        return new NetworkBoundResource<PagedList<MovieEntity>, List<MovieModel>>(appExecutors) {
             @Override
-            public void onAllCoursesReceived(List<TvShowModel> courseResponses) {
-                ArrayList<TvShowEntity> courseList = new ArrayList<>();
-                for (int i = 0; i < courseResponses.size(); i++) {
-                    TvShowModel response = courseResponses.get(i);
-                    TvShowEntity course = new TvShowEntity(
-                            response.getId(),
-                            response.getName(),
-                            response.getFirstAirDate(),
-                            response.getPosterPath(),
-                            response.getOverview()
+            protected LiveData<PagedList<MovieEntity>> loadFromDB() {
+                return new LivePagedListBuilder<>(localRepository.getBookmarkedCoursesPaged(), /* page size */ 20).build();
+            }
+
+            @Override
+            protected Boolean shouldFetch(PagedList<MovieEntity> data) {
+                return false;
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<MovieModel>>> createCall() {
+                return null;
+            }
+
+            @Override
+            protected void saveCallResult(List<MovieModel> data) {
+
+            }
+        }.asLiveData();
+    }
+
+
+// batas fitur
+
+
+    public LiveData<Resource<List<TvShowEntity>>> getAllTv() {
+        return new NetworkBoundResource<List<TvShowEntity>, List<TvShowModel>>(appExecutors) {
+            @Override
+            public LiveData<List<TvShowEntity>> loadFromDB() {
+                return localRepository.getAllTv();
+            }
+
+            @Override
+            public Boolean shouldFetch(List<TvShowEntity> data) {
+                return (data == null) || (data.size() == 0);
+            }
+
+            @Override
+            public LiveData<ApiResponse<List<TvShowModel>>> createCall() {
+                return remoteRepository.getTv();
+            }
+
+            @Override
+            public void saveCallResult(List<TvShowModel> courseResponses) {
+                List<TvShowEntity> courseEntities = new ArrayList<>();
+
+                for (TvShowModel courseResponse : courseResponses) {
+
+                    courseEntities.add(new TvShowEntity(
+                           courseResponse.getId(),
+                           courseResponse.getName(),
+                           courseResponse.getFirstAirDate(),
+                           courseResponse.getPosterPath(),
+                           courseResponse.getOverview(),
+                           null
+                    ));
+                }
+
+                localRepository.insertTv(courseEntities);
+            }
+        }.asLiveData();
+    }
+
+    @Override
+    public LiveData<Resource<TvShowEntity>> getAllTvDetail(final String courseId) {
+        return new NetworkBoundResource<TvShowEntity, List<TvShowModel>>(appExecutors) {
+            @Override
+            protected LiveData<TvShowEntity> loadFromDB() {
+                return localRepository.getCourseWithTv(courseId);
+            }
+
+            @Override
+            protected Boolean shouldFetch(TvShowEntity courseWithModule) {
+                return (courseWithModule == null);
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<TvShowModel>>> createCall() {
+                return remoteRepository.getAllTvById(courseId);
+            }
+
+            @Override
+            protected void saveCallResult(List<TvShowModel> moduleResponses) {
+
+                List<TvShowEntity> moduleEntities = new ArrayList<>();
+
+                for (TvShowModel moduleResponse : moduleResponses) {
+                    moduleEntities.add(new TvShowEntity(courseId, moduleResponse.getName(),
+                            moduleResponse.getFirstAirDate(),
+                            moduleResponse.getPosterPath(),
+                            moduleResponse.getOverview(),
+                            null)
                     );
-
-                    courseList.add(course);
                 }
-                courseResults.postValue(courseList);
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-
+                localRepository.insertTv(moduleEntities);
             }
-        });
-        return courseResults;
+        }.asLiveData();
     }
 
     @Override
-    public LiveData<TvShowEntity> getAllTvDetail(String courseId) {
-        MutableLiveData<TvShowEntity> courseResult = new MutableLiveData<>();
+    public void setCourseFavorite(TvShowEntity course, boolean state) {
+        Runnable runnable = () -> localRepository.setCourseFavoriteTv(course, state);
 
-        remoteRepository.getTv(new RemoteRepository.LoadTvCallback() {
-            @Override
-            public void onAllCoursesReceived(List<TvShowModel> courseResponses) {
-                for (int i = 0; i < courseResponses.size(); i++) {
-                    TvShowModel response = courseResponses.get(i);
-                    if (response.getId().equals(courseId)) {
-                        TvShowEntity course = new TvShowEntity(
-                                response.getId(),
-                                response.getName(),
-                                response.getFirstAirDate(),
-                                response.getPosterPath(),
-                                response.getOverview()
-                        );
-                        courseResult.postValue(course);
-                    }
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
-
-        return courseResult;
+        appExecutors.diskIO().execute(runnable);
     }
 
 

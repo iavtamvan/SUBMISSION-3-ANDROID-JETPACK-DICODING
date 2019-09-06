@@ -11,14 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
-import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.response.MovieModel;
-import com.iavariav.submission1.ui.movie.MovieViewModel;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
-import com.iavariav.submission1.utils.GlideApp;
+import com.iavariav.submission1.vo.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.AcademyViewH
 
         });
 
-        GlideApp.with(holder.itemView.getContext())
+        Glide.with(holder.itemView.getContext())
                 .load("https://image.tmdb.org/t/p/w500" + getListCourses().get(position).getPoster_path())
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error))
                 .into(holder.imgPoster);

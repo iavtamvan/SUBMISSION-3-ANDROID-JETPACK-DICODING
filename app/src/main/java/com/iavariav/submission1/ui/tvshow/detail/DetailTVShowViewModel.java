@@ -1,6 +1,8 @@
 package com.iavariav.submission1.ui.tvshow.detail;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
@@ -8,6 +10,7 @@ import com.iavariav.submission1.data.MovieTVRepository;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.vo.Resource;
 
 import java.util.List;
 
@@ -37,24 +40,48 @@ public class DetailTVShowViewModel extends ViewModel {
 //        return courseId;
 //    }
 
-    private String courseId;
+
+    //    private CourseEntity mCourse;
+//    private String courseId;
     private MovieTVRepository academyRepository;
+
+    private MutableLiveData<String> courseId = new MutableLiveData<>();
 
     public DetailTVShowViewModel(MovieTVRepository mAcademyRepository) {
         this.academyRepository = mAcademyRepository;
     }
-    LiveData<TvShowEntity> getCourse() {
-        return academyRepository.getAllTvDetail(courseId);
-    }
+    public LiveData<Resource<TvShowEntity>> courseModule = Transformations.switchMap(courseId,
+            id -> academyRepository.getAllTvDetail(id));
+
+//    LiveData<MovieEntity> getCourse() {
+//        return academyRepository.getAllMovieDetail(courseId);
+//    }
 //    public LiveData<List<ModuleEntity>> getModules() {
 //        return academyRepository.getAllModulesByCourse(courseId);
 //    }
 
+
     public void setCourseId(String courseId) {
-        this.courseId = courseId;
+        this.courseId.setValue(courseId);
     }
 
-    public String getCourseId(){
-        return courseId;
+    public String getCourseId() {
+        if (courseId.getValue() == null) return null;
+        return courseId.getValue();
+    }
+
+    void setFavorited() {
+        if (courseModule.getValue() != null) {
+            TvShowEntity courseWithModule = courseModule.getValue().data;
+
+//            if (courseWithModule != null) {
+//                MovieEntity courseEntity = courseWithModule.mCourse;
+
+            // Kode di bawah menggunakan tanda seru (!),
+            // karena akan mengganti status dari apakah sudah di bookmark atau tidak menjadi apakah sudah siap dibookmark atau tidak
+//                final boolean newState = courseEntity.isFavorite();
+//                academyRepository.setCourseBookmark(courseEntity, newState);
+//            }
+        }
     }
 }

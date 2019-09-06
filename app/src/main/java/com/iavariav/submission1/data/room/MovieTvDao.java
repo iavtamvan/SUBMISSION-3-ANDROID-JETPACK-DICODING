@@ -11,7 +11,8 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.entity.MovieWithTv;
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
+import com.iavariav.submission1.data.remote.entity.TvShowEmbed;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface MovieTvDao {
 
     @Transaction
     @Query("SELECT * FROM movieEntity WHERE id = :courseId")
-    LiveData<MovieWithTv> getAllMovieByid(String courseId);
+    LiveData<MovieEmbed> getAllMovieByid(String courseId);
 
     @WorkerThread
     @Query("SELECT * FROM movieEntity where favorite = 1")
@@ -48,14 +49,14 @@ public interface MovieTvDao {
 
     @Transaction
     @Query("SELECT * FROM tvshowentity WHERE id = :courseId")
-    LiveData<TvShowEntity> getAllTvByid(String courseId);
+    LiveData<TvShowEmbed> getAllTvByid(String courseId);
 
     @WorkerThread
     @Query("SELECT * FROM tvshowentity where favorite = 1")
     LiveData<List<TvShowEntity>> getFavTv();
 
     @WorkerThread
-    @Query("SELECT * FROM movieEntity where favorite = 1")
+    @Query("SELECT * FROM tvshowentity where favorite = 1")
     DataSource.Factory<Integer, TvShowEntity> getFavTvPage();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

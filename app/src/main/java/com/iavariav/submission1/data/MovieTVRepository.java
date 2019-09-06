@@ -1,14 +1,14 @@
 package com.iavariav.submission1.data;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.iavariav.submission1.data.remote.ApiResponse;
 import com.iavariav.submission1.data.remote.RemoteRepository;
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.entity.MovieWithTv;
+import com.iavariav.submission1.data.remote.entity.TvShowEmbed;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.remote.response.MovieModel;
 import com.iavariav.submission1.data.remote.response.TvShowModel;
@@ -80,15 +80,15 @@ public class MovieTVRepository implements MovieTVDataSource{
     }
 
     @Override
-    public LiveData<Resource<MovieWithTv>> getAllMovieDetail(final String courseId) {
-        return new NetworkBoundResource<MovieWithTv, List<MovieModel>>(appExecutors) {
+    public LiveData<Resource<MovieEmbed>> getAllMovieDetail(final String courseId) {
+        return new NetworkBoundResource<MovieEmbed, List<MovieModel>>(appExecutors) {
             @Override
-            protected LiveData<MovieWithTv> loadFromDB() {
+            protected LiveData<MovieEmbed> loadFromDB() {
                 return localRepository.getCourseWithModules(courseId);
             }
 
             @Override
-            protected Boolean shouldFetch(MovieWithTv courseWithModule) {
+            protected Boolean shouldFetch(MovieEmbed courseWithModule) {
                 return (courseWithModule == null || courseWithModule.mCourse == null);
             }
 
@@ -187,15 +187,15 @@ public class MovieTVRepository implements MovieTVDataSource{
     }
 
     @Override
-    public LiveData<Resource<TvShowEntity>> getAllTvDetail(final String courseId) {
-        return new NetworkBoundResource<TvShowEntity, List<TvShowModel>>(appExecutors) {
+    public LiveData<Resource<TvShowEmbed>> getAllTvDetail(final String courseId) {
+        return new NetworkBoundResource<TvShowEmbed, List<TvShowModel>>(appExecutors) {
             @Override
-            protected LiveData<TvShowEntity> loadFromDB() {
+            protected LiveData<TvShowEmbed> loadFromDB() {
                 return localRepository.getCourseWithTv(courseId);
             }
 
             @Override
-            protected Boolean shouldFetch(TvShowEntity courseWithModule) {
+            protected Boolean shouldFetch(TvShowEmbed courseWithModule) {
                 return (courseWithModule == null);
             }
 
@@ -228,6 +228,31 @@ public class MovieTVRepository implements MovieTVDataSource{
         Runnable runnable = () -> localRepository.setCourseFavoriteTv(course, state);
 
         appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public LiveData<Resource<PagedList<TvShowEntity>>> getBookmarkedTvShowPaged() {
+        return new NetworkBoundResource<PagedList<TvShowEntity>, List<TvShowModel>>(appExecutors) {
+            @Override
+            protected LiveData<PagedList<TvShowEntity>> loadFromDB() {
+                return new LivePagedListBuilder<>(localRepository.getBookmarkedTvPaged(), /* page size */ 20).build();
+            }
+
+            @Override
+            protected Boolean shouldFetch(PagedList<TvShowEntity> data) {
+                return false;
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<TvShowModel>>> createCall() {
+                return null;
+            }
+
+            @Override
+            protected void saveCallResult(List<TvShowModel> data) {
+
+            }
+        }.asLiveData();
     }
 
 

@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.iavariav.submission1.data.MovieTVRepository;
 import com.iavariav.submission1.di.Injection;
-import com.iavariav.submission1.ui.favorite.FavoriteViewModel;
+import com.iavariav.submission1.ui.favorite.movie.MovieFavoriteViewModel;
+import com.iavariav.submission1.ui.favorite.tvshow.TvShowFavoriteViewModel;
 import com.iavariav.submission1.ui.movie.MovieViewModel;
-import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieViewModel;
 import com.iavariav.submission1.ui.tvshow.TvShowViewModel;
 import com.iavariav.submission1.ui.tvshow.detail.DetailTVShowViewModel;
@@ -55,9 +55,13 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             //noinspection unchecked
             return (T) new DetailTVShowViewModel(mAcademyRepository);
         }
-        else if (modelClass.isAssignableFrom(FavoriteViewModel.class)) {
+        else if (modelClass.isAssignableFrom(MovieFavoriteViewModel.class)) {
             //noinspection unchecked
-            return (T) new FavoriteViewModel(mAcademyRepository);
+            return (T) new MovieFavoriteViewModel(mAcademyRepository);
+        }
+        else if (modelClass.isAssignableFrom(TvShowFavoriteViewModel.class)) {
+            //noinspection unchecked
+            return (T) new TvShowFavoriteViewModel(mAcademyRepository);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

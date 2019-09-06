@@ -8,8 +8,8 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.iavariav.submission1.data.MovieTVRepository;
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.entity.MovieWithTv;
 import com.iavariav.submission1.vo.Resource;
 
 import static android.content.ContentValues.TAG;
@@ -49,7 +49,7 @@ public class DetailMovieViewModel extends ViewModel {
     public DetailMovieViewModel(MovieTVRepository mAcademyRepository) {
         this.academyRepository = mAcademyRepository;
     }
-    public LiveData<Resource<MovieWithTv>> courseModule = Transformations.switchMap(courseId,
+    public LiveData<Resource<MovieEmbed>> courseModule = Transformations.switchMap(courseId,
             id -> academyRepository.getAllMovieDetail(id));
 
 //    LiveData<MovieEntity> getCourse() {
@@ -71,7 +71,7 @@ public class DetailMovieViewModel extends ViewModel {
 
     void setFavorited() {
         if (courseModule.getValue() != null) {
-            MovieWithTv courseWithModule = courseModule.getValue().data;
+            MovieEmbed courseWithModule = courseModule.getValue().data;
             if (courseWithModule != null) {
                 MovieEntity courseEntity = courseWithModule.mCourse;
                 Log.e(TAG, "setFavorited: " + courseEntity );

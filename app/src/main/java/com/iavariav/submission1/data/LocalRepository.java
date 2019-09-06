@@ -5,8 +5,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
-import com.iavariav.submission1.data.remote.entity.MovieWithTv;
+import com.iavariav.submission1.data.remote.entity.TvShowEmbed;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.data.room.MovieTvDao;
 
@@ -34,7 +35,7 @@ public class LocalRepository {
         return mAcademyDao.getAllMovie();
     }
 
-    public LiveData<MovieWithTv> getCourseWithModules(final String courseId) {
+    public LiveData<MovieEmbed> getCourseWithModules(final String courseId) {
         return mAcademyDao.getAllMovieByid(courseId);
     }
 
@@ -62,7 +63,7 @@ public class LocalRepository {
         return mAcademyDao.getAllTv();
     }
 
-    public LiveData<TvShowEntity> getCourseWithTv(final String courseId) {
+    public LiveData<TvShowEmbed> getCourseWithTv(final String courseId) {
         return mAcademyDao.getAllTvByid(courseId);
     }
 
@@ -78,6 +79,8 @@ public class LocalRepository {
     public void insertTv(List<TvShowEntity> courses) {
         mAcademyDao.insertAllTv(courses);
     }
-
+    public DataSource.Factory<Integer, TvShowEntity> getBookmarkedTvPaged() {
+        return mAcademyDao.getFavTvPage();
+    }
 
 }

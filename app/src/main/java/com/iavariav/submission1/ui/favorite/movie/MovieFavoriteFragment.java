@@ -1,4 +1,4 @@
-package com.iavariav.submission1.ui.favorite;
+package com.iavariav.submission1.ui.favorite.movie;
 
 
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.ui.favorite.FavoriteFragmentCallback;
 import com.iavariav.submission1.utils.ViewModelFactory;
 
 import java.util.List;
@@ -32,16 +33,16 @@ import static android.content.ContentValues.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoriteFragment extends Fragment implements FavoriteFragmentCallback {
-    private FavoritePagedAdapter adapter;
+public class MovieFavoriteFragment extends Fragment implements FavoriteFragmentCallback {
+    private MovieFavoritePagedAdapter adapter;
     private RecyclerView rvBookmark;
     private ProgressBar progressBar;
 
-    private FavoriteViewModel viewModel;
+    private MovieFavoriteViewModel viewModel;
     private List<MovieEntity> courses;
 
 
-    public FavoriteFragment() {
+    public MovieFavoriteFragment() {
         // Required empty public constructor
     }
 
@@ -81,7 +82,7 @@ public class FavoriteFragment extends Fragment implements FavoriteFragmentCallba
             itemTouchHelper.attachToRecyclerView(rvBookmark);
             viewModel = obtainViewModel(getActivity());
 
-            adapter = new FavoritePagedAdapter(this);
+            adapter = new MovieFavoritePagedAdapter(this);
 
             viewModel.getBookmarksPaged().observe(this, courses -> {
                 if (courses != null) {
@@ -113,10 +114,10 @@ public class FavoriteFragment extends Fragment implements FavoriteFragmentCallba
         }
     }
     @NonNull
-    private static FavoriteViewModel obtainViewModel(FragmentActivity activity) {
+    private static MovieFavoriteViewModel obtainViewModel(FragmentActivity activity) {
         // Use a Factory to inject dependencies into the ViewModel
         ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
-        return ViewModelProviders.of(activity, factory).get(FavoriteViewModel.class);
+        return ViewModelProviders.of(activity, factory).get(MovieFavoriteViewModel.class);
     }
 
     private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {

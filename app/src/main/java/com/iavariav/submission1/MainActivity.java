@@ -8,7 +8,9 @@ import android.os.Bundle;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.iavariav.submission1.ui.ProfilFragment;
-import com.iavariav.submission1.ui.favorite.FavoriteFragment;
+import com.iavariav.submission1.ui.favorite.HomeFavoriteFragment;
+import com.iavariav.submission1.ui.favorite.movie.MovieFavoriteFragment;
+import com.iavariav.submission1.ui.favorite.tvshow.TvShowFavoriteFragment;
 import com.iavariav.submission1.ui.movie.MovieFragment;
 import com.iavariav.submission1.ui.tvshow.TVShowFragment;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("Movie", MovieFragment.class)
                 .add("TV Show", TVShowFragment.class)
-                .add("Favorite", FavoriteFragment.class)
+                .add("Favorite", TvShowFavoriteFragment.class)
                 .add("Profil", ProfilFragment.class)
                 .create());
 

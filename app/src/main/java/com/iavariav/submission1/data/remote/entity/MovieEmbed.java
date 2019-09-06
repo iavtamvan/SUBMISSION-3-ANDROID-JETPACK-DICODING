@@ -5,11 +5,7 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class MovieWithTv {
+public class MovieEmbed {
     @Embedded
     public MovieEntity mCourse;
-
-//    @Relation(parentColumn = "id", entityColumn = "id")
-//    public List<MovieWithTv> mModules;
-
 }

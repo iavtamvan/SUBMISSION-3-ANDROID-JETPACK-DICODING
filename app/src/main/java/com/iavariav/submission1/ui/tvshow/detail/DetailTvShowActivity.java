@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -91,7 +92,7 @@ public class DetailTvShowActivity extends AppCompatActivity {
 //                                    progressBar.setVisibility(View.GONE);
 //                                    adapter.setModules(courseWithModuleResource.data.mModules);
 //                                    adapter.notifyDataSetChanged();
-                                    populateCourse(courseWithModuleResource.data);
+                                    populateCourse(courseWithModuleResource.data.tvShowEntity);
                                 }
                                 break;
                             case ERROR:
@@ -116,26 +117,26 @@ public class DetailTvShowActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         this.menu = menu;
-//        viewModel.courseModule.observe(this, courseWithModule -> {
-//            if (courseWithModule != null) {
-//                switch (courseWithModule.status) {
-//                    case LOADING:
+        viewModel.courseModule.observe(this, courseWithModule -> {
+            if (courseWithModule != null) {
+                switch (courseWithModule.status) {
+                    case LOADING:
 //                        progressBar.setVisibility(View.VISIBLE);
-//                        break;
-//                    case SUCCESS:
-//                        if (courseWithModule.data != null) {
+                        break;
+                    case SUCCESS:
+                        if (courseWithModule.data != null) {
 //                            progressBar.setVisibility(View.GONE);
-//                            boolean state = courseWithModule.data.mCourse.isBookmarked();
-//                            setBookmarkState(state);
-//                        }
-//                        break;
-//                    case ERROR:
+                            boolean state = courseWithModule.data.tvShowEntity.isFavorite();
+                            setBookmarkState(state);
+                        }
+                        break;
+                    case ERROR:
 //                        progressBar.setVisibility(View.GONE);
-//                        Toast.makeText(getApplicationContext(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-//            }
-//        });
+                        Toast.makeText(getApplicationContext(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
 
         return true;
     }

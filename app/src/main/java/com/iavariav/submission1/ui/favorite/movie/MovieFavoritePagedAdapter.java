@@ -1,4 +1,4 @@
-package com.iavariav.submission1.ui.favorite;
+package com.iavariav.submission1.ui.favorite.movie;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,16 +19,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.ui.favorite.FavoriteFragmentCallback;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieActivity;
 
 import static android.content.ContentValues.TAG;
 
 
-public class FavoritePagedAdapter extends PagedListAdapter<MovieEntity, FavoritePagedAdapter.BookmarkViewHolder> {
+public class MovieFavoritePagedAdapter extends PagedListAdapter<MovieEntity, MovieFavoritePagedAdapter.BookmarkViewHolder> {
 
     private FavoriteFragmentCallback callback;
 
-    FavoritePagedAdapter(FavoriteFragmentCallback callback) {
+    MovieFavoritePagedAdapter(FavoriteFragmentCallback callback) {
         super(DIFF_CALLBACK);
 
         this.callback = callback;
@@ -72,7 +72,7 @@ public class FavoritePagedAdapter extends PagedListAdapter<MovieEntity, Favorite
 //            });
 
             Glide.with(holder.itemView.getContext())
-                    .load(bookmark.getPoster_path())
+                    .load("https://image.tmdb.org/t/p/w500" + bookmark.getPoster_path())
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error))
                     .into(holder.imgPoster);

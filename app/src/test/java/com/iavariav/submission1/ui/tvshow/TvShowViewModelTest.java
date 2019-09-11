@@ -3,6 +3,7 @@ package com.iavariav.submission1.ui.tvshow;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.test.espresso.IdlingRegistry;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.MovieTVRepository;
@@ -10,6 +11,8 @@ import com.iavariav.submission1.data.remote.entity.MovieEntity;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.ui.movie.MovieViewModel;
 import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.utils.EspressoIdlingResource;
+import com.iavariav.submission1.vo.Resource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +28,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TvShowViewModelTest {
+
+    private String USERNAME = "Dicoding";
+
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
@@ -38,17 +44,19 @@ public class TvShowViewModelTest {
 
     @Test
     public void getCourses() {
-        ArrayList<TvShowEntity> dummyCourses = DataDummy.generateDummytv();
+        Resource<List<TvShowEntity>> resource = Resource.success(DataDummy.generateDummytv());
+        MutableLiveData<Resource<List<TvShowEntity>>> dummyCourses = new MutableLiveData<>();
+        dummyCourses.setValue(resource);
 
-        MutableLiveData<List<TvShowEntity>> courses = new MutableLiveData<>();
-        courses.setValue(dummyCourses);
+        when(academyRepository.getAllTv()).thenReturn(dummyCourses);
 
-        when(academyRepository.getAllTv()).thenReturn(courses);
+        Observer<Resource<List<TvShowEntity>>> observer = mock(Observer.class);
 
-        Observer<List<TvShowEntity>> observer = mock(Observer.class);
+        viewModel.setUsername(USERNAME);
 
-        viewModel.getCourses().observeForever(observer);
+        viewModel.getCourses.observeForever(observer);
 
-        verify(observer).onChanged(dummyCourses);
+        verify(observer).onChanged(resource);
     }
+
 }

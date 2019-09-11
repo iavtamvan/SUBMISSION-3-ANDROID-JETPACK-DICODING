@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("Movie", MovieFragment.class)
                 .add("TV Show", TVShowFragment.class)
-                .add("Favorite", TvShowFavoriteFragment.class)
+                .add("Fav Mov", MovieFavoriteFragment.class)
+                .add("Fav TV", TvShowFavoriteFragment.class)
                 .add("Profil", ProfilFragment.class)
                 .create());
 

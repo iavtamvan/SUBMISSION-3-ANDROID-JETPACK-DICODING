@@ -1,10 +1,12 @@
 package com.iavariav.submission1.ui.tvshow;
 
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.testing.SingleFragmentActivity;
 import com.iavariav.submission1.ui.movie.MovieFragment;
+import com.iavariav.submission1.utils.EspressoIdlingResource;
 import com.iavariav.submission1.utils.RecyclerViewItemCountAssertion;
 
 import org.junit.After;
@@ -26,19 +28,16 @@ public class TVShowFragmentTest {
     @Before
     public void setUp() {
         activityRule.getActivity().setFragment(tvShowFragment);
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getEspressoIdlingResource());
     }
 
     @After
     public void tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getEspressoIdlingResource());
     }
 
     @Test
     public void loadCourses() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()));
         onView(withId(R.id.rv_tvshow)).check(new RecyclerViewItemCountAssertion(20));
     }

@@ -1,10 +1,11 @@
-package com.iavariav.submission1.ui.movie;
+package com.iavariav.submission1.ui.favorite.movie;
 
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.iavariav.submission1.R;
 import com.iavariav.submission1.testing.SingleFragmentActivity;
+import com.iavariav.submission1.ui.movie.MovieFragment;
 import com.iavariav.submission1.utils.EspressoIdlingResource;
 import com.iavariav.submission1.utils.RecyclerViewItemCountAssertion;
 
@@ -19,10 +20,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
-public class MovieFragmentTest {
+public class MovieFavoriteFragmentTest {
     @Rule
     public ActivityTestRule<SingleFragmentActivity> activityRule = new ActivityTestRule<>(SingleFragmentActivity.class);
-    private MovieFragment academyFragment = new MovieFragment();
+    private MovieFavoriteFragment academyFragment = new MovieFavoriteFragment();
 
     @Before
     public void setUp() {
@@ -37,8 +38,8 @@ public class MovieFragmentTest {
 
     @Test
     public void loadCourses() {
-
-        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()));
-        onView(withId(R.id.rv_movie)).check(new RecyclerViewItemCountAssertion(20));
+        onView(withId(R.id.rv_bookmark)).check(matches(isDisplayed()));
+        onView(withId(R.id.rv_bookmark)).check(new RecyclerViewItemCountAssertion(1));
     }
+
 }

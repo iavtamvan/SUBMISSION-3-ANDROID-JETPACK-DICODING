@@ -3,11 +3,15 @@ package com.iavariav.submission1.ui.movie;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.test.espresso.IdlingRegistry;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.MovieTVRepository;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.ui.tvshow.TvShowViewModel;
 import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.utils.EspressoIdlingResource;
+import com.iavariav.submission1.vo.Resource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +28,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MovieViewModelTest {
+
+    private String USERNAME = "Dicoding";
+
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
@@ -37,17 +44,19 @@ public class MovieViewModelTest {
 
     @Test
     public void getCourses() {
-        ArrayList<MovieEntity> dummyCourses = DataDummy.generateDummymovie();
+        Resource<List<MovieEntity>> resource = Resource.success(DataDummy.generateDummymovie());
+        MutableLiveData<Resource<List<MovieEntity>>> dummyCourses = new MutableLiveData<>();
+        dummyCourses.setValue(resource);
 
-        MutableLiveData<List<MovieEntity>> courses = new MutableLiveData<>();
-        courses.setValue(dummyCourses);
+        when(academyRepository.getAllMovie()).thenReturn(dummyCourses);
 
-        when(academyRepository.getAllMovie()).thenReturn(courses);
+        Observer<Resource<List<MovieEntity>>> observer = mock(Observer.class);
 
-        Observer<List<MovieEntity>> observer = mock(Observer.class);
+        viewModel.setUsername(USERNAME);
 
-        viewModel.getCourses().observeForever(observer);
+        viewModel.getCourses.observeForever(observer);
 
-        verify(observer).onChanged(dummyCourses);
+        verify(observer).onChanged(resource);
     }
+
 }

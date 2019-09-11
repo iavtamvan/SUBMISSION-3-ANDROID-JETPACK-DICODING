@@ -1,7 +1,9 @@
 package com.iavariav.submission1.utils;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.TvShowEmbed;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 
 import java.util.ArrayList;
@@ -184,5 +186,20 @@ public class DataDummy {
             }
         }
         return null;
+    }
+
+    public static MovieEmbed generateDummyCourseWithModules(MovieEntity course, boolean bookmarked) {
+        MovieEmbed courseWithModule = new MovieEmbed();
+        courseWithModule.mCourse = course;
+        courseWithModule.mCourse.setFavorite(bookmarked);
+        courseWithModule.mCourse = getMovie(course.getId());
+        return courseWithModule;
+    }
+    public static TvShowEmbed generateDummyTvWithModules(TvShowEntity course, boolean bookmarked) {
+        TvShowEmbed courseWithModule = new TvShowEmbed();
+        courseWithModule.tvShowEntity = course;
+        courseWithModule.tvShowEntity.setFavorite(bookmarked);
+        courseWithModule.tvShowEntity = getTvShow(course.getId());
+        return courseWithModule;
     }
 }

@@ -155,8 +155,10 @@ public class DetailTvShowActivity extends AppCompatActivity {
         MenuItem menuItem = menu.findItem(R.id.action_bookmark);
         if (state) {
             menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_bookmarked_white));
+            Toast.makeText(this, "Favorited" , Toast.LENGTH_SHORT).show();
         } else {
             menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_white_24dp));
+            Toast.makeText(this, "No Favorited" , Toast.LENGTH_SHORT).show();
         }
     }
 

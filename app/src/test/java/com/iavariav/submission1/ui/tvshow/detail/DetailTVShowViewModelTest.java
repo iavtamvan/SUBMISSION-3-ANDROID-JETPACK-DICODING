@@ -3,13 +3,19 @@ package com.iavariav.submission1.ui.tvshow.detail;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.test.espresso.IdlingRegistry;
 
 import com.iavariav.submission1.data.DeskripsiEntity;
 import com.iavariav.submission1.data.MovieTVRepository;
+import com.iavariav.submission1.data.remote.entity.MovieEmbed;
 import com.iavariav.submission1.data.remote.entity.MovieEntity;
+import com.iavariav.submission1.data.remote.entity.TvShowEmbed;
 import com.iavariav.submission1.data.remote.entity.TvShowEntity;
 import com.iavariav.submission1.ui.movie.detail.DetailMovieViewModel;
+import com.iavariav.submission1.ui.tvshow.TvShowViewModel;
 import com.iavariav.submission1.utils.DataDummy;
+import com.iavariav.submission1.utils.EspressoIdlingResource;
+import com.iavariav.submission1.vo.Resource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,29 +38,24 @@ public class DetailTVShowViewModelTest {
     private TvShowEntity dummyCourse = DataDummy.generateDummytv().get(0);
     private String courseId = dummyCourse.getId();
 
-    //    private ArrayList<MovieEntity> dummyModules = DataDummy.generateDummymovie(courseId);
+
     @Before
     public void setUp() {
         viewModel = new DetailTVShowViewModel(academyRepository);
         viewModel.setCourseId(courseId);
     }
-
-//    @After
-//    public void tearDown() {
-//    }
-
     @Test
-    public void getCourse() {
-        MutableLiveData<TvShowEntity> courseEntities = new MutableLiveData<>();
-        courseEntities.setValue(dummyCourse);
+    public void getCourseWithModule() {
+        Resource<TvShowEmbed> resource = Resource.success(DataDummy.generateDummyTvWithModules(dummyCourse, true));
+        MutableLiveData<Resource<TvShowEmbed>> courseEntities = new MutableLiveData<>();
+        courseEntities.setValue(resource);
 
         when(academyRepository.getAllTvDetail(courseId)).thenReturn(courseEntities);
 
-        Observer<TvShowEntity> observer = mock(Observer.class);
+        Observer<Resource<TvShowEmbed>> observer = mock(Observer.class);
+        viewModel.courseModule.observeForever(observer);
 
-        viewModel.getCourse().observeForever(observer);
-
-        verify(observer).onChanged(dummyCourse);
+        verify(observer).onChanged(resource);
     }
 
 
